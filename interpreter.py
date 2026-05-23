@@ -2,7 +2,7 @@ from lexer import tokenize
 from parser import Parser
 from evaluator import evaluate
 
-code = "3 + 4 * 2"
+code = "(3 + 4) * 2"
 
 tokens = tokenize(code)
 

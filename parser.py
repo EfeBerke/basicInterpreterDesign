@@ -12,7 +12,7 @@ class Parser:
             return self.tokens[self.pos]
         return None
 
-
+    # consuming the current token if it is matching the expected type
     def eat(self, token_type):
         token = self.current()
 
@@ -28,6 +28,13 @@ class Parser:
         if token.type == "NUMBER":
             self.eat("NUMBER")
             return Number(token.value)
+    
+        elif token.type == "LEFTPARENTHESIS":
+
+            self.eat("LEFTPARENTHESIS")
+            node = self.parse_expression()
+            self.eat("RIGHTPARENTHESIS")
+            return node
         
     def parse_term(self):
         node = self.parse_factor()
