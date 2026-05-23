@@ -4,8 +4,15 @@ from evaluator import evaluate
 from environment import Environment
 
 code = """
-print(if 3 < 5 then 1 else 0 end);
-print(if false then 100 else 200 end);
+let x = 10;
+let r = if x > 5 then 1 else 0 end;
+print(r);
+let y = if x < 5 then 100 else 200 end;
+print(y);
+print(if true then 42 else 99 end);
+let a = 3;
+let b = 7;
+print(if a > b then a else b end);
 """
 
 tokens = tokenize(code)

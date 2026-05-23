@@ -49,3 +49,15 @@ class IfExpression:
         self.condition = condition
         self.then_branch = then_branch
         self.else_branch = else_branch
+
+# Assigning Statement
+class AssignStatement:
+    def __init__(self, name, value):
+        self.name = name
+        self.value = value
+
+# Block expression
+class Block:
+    def __init__(self, statements):
+        self.statements = statements
+        

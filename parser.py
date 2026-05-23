@@ -1,4 +1,4 @@
-from ast_nodes import Number, BinOp, Variable, LetStatement, PrintStatement, Bool, UnaryOp, IfExpression
+from ast_nodes import Number, BinOp, Variable, LetStatement, PrintStatement, Bool, UnaryOp, IfExpression, AssignStatement, Block
 
 class Parser:
 
@@ -21,7 +21,13 @@ class Parser:
             return token
 
         raise Exception(f"Expected {token_type}")
-        
+
+    # distinguishing assignment statement from variable expression
+    def peek(self):
+        if self.pos + 1 < len(self.tokens):
+            return self.tokens[self.pos + 1]
+        return None
+
     def parse_term(self):
         node = self.parse_factor()
 
@@ -119,6 +125,10 @@ class Parser:
         if token.type == "PRINT":
             return self.parse_print()
         
+        # detecting assignment statements
+        if token.type == "IDENTIFIER" and self.peek().type == "EQUAL":
+            return self.parse_assignment()
+
         expr = self.parse_or()
         self.eat("SEMICOLON")
         return expr
@@ -173,10 +183,25 @@ class Parser:
         condition = self.parse_or()
 
         self.eat("THEN")
-        then_branch = self.parse_or()
+        then_branch = self.parse_block({"ELSE"})
 
         self.eat("ELSE")
-        else_branch = self.parse_or()
+        else_branch = self.parse_block({"END"})
 
         self.eat("END")
         return IfExpression(condition, then_branch, else_branch)
+    
+    def parse_assignment(self):
+        name_token = self.eat("IDENTIFIER")
+        self.eat("EQUAL")
+        value = self.parse_or()
+        self.eat("SEMICOLON")
+        return AssignStatement(name_token.value, value)
+    
+    def parse_block(self, stop_tokens):
+        statements = []
+        # keep parsing statements until reaching else or end
+        while self.current() is not None and self.current().type not in stop_tokens:
+            statements.append(self.parse_statement())
+
+        return Block(statements)
