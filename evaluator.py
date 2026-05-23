@@ -60,8 +60,11 @@ def evaluate(node, env):
         return env.lookup(node.name)
     
     if isinstance(node, LetStatement):
+        # modifying for the recursion variable
+        env.define(node.name, None)
         value = evaluate(node.value, env)
-        env.define(node.name, value)
+        env.assign(node.name, value)
+        
         return None
     
     if isinstance(node, PrintStatement):

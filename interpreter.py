@@ -4,16 +4,28 @@ from evaluator import evaluate
 from environment import Environment
 
 code = """
-let add = fun(a, b) -> a + b end;
-print(add(3, 4));
-print(add(10, 20));
+(* Test 10: Combined features -- scope, mutation through closures *)
+let make_counter = fun(start) ->
+    let count = start;
+    fun() ->
+        count = count + 1;
+        count
+    end
+end;
 
-let square = fun(x) -> x * x end;
-print(square(5));
+let c1 = make_counter(0);
+let c2 = make_counter(10);
+print(c1());
+print(c1());
+print(c2());
+print(c1());
+print(c2());
 
-let max = fun(a, b) -> if a > b then a else b end end;
-print(max(3, 7));
-print(max(10, 2));
+(* Closure captures defining environment *)
+let x = 100;
+let get_x = fun() -> x end;
+x = 200;
+print(get_x());
 """
 
 tokens = tokenize(code)

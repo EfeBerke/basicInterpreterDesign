@@ -16,8 +16,18 @@ def tokenize(text):
 
     while i < len(text):
         char = text[i]
+        # Early check before char = "(" is important for direct skipping
+        if text[i:i+2] == "(*":
+            i += 2
+            while i < len(text) and text[i:i+2] != "*)":
+                i += 1
 
-        if char.isspace():
+            if i >= len(text):
+                raise Exception("Unterminated comment!")
+            i += 2
+
+        # skipping empty spaces
+        elif char.isspace():
             i += 1
 
         # handling the alphabethic characters for let, print and variables      
