@@ -1,4 +1,11 @@
-from ast_nodes import Number, BinOp, Variable, LetStatement, PrintStatement, Bool, UnaryOp, IfExpression, AssignStatement, Block
+from ast_nodes import Number, BinOp, Variable, LetStatement, PrintStatement, Bool, UnaryOp, IfExpression, AssignStatement, Block, FunExpression, CallExpression
+from environment import Environment
+
+class FunctionValue:
+    def __init__(self, params, body, env):
+        self.params = params
+        self.body = body
+        self.env = env
 
 def evaluate(node, env):
 
@@ -100,3 +107,22 @@ def evaluate(node, env):
             result = evaluate(statement, env)
 
         return result
+    
+    # fun function 
+    if isinstance(node, FunExpression):
+        return FunctionValue(node.params, node.body, env)
+    
+    # call function
+    if isinstance(node, CallExpression):
+        func = evaluate(node.func, env)
+
+        arg_values = []
+        for arg in node.args:
+            arg_values.append(evaluate(arg, env))
+
+        call_env = Environment(parent=func.env)
+
+        for param, value in zip(func.params, arg_values):
+            call_env.define(param, value)
+
+        return evaluate(func.body, call_env)

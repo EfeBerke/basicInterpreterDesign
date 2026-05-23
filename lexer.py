@@ -56,6 +56,10 @@ def tokenize(text):
             elif word == "end":
                 tokens.append(Token("END"))
 
+            # fun function
+            elif word == "fun":
+                tokens.append(Token("FUN"))
+
             else:
                 tokens.append(Token("IDENTIFIER", word))
 
@@ -75,8 +79,17 @@ def tokenize(text):
             tokens.append(Token("GTE"))
             i += 2 
 
+        # for fun function implementation
+        elif text[i:i+2] == "->":
+            tokens.append(Token("ARROW"))
+            i += 2
+
         elif char == "=":
             tokens.append(Token("EQUAL"))
+            i += 1
+
+        elif char == ",":
+            tokens.append(Token("COMMA"))
             i += 1
 
         elif char.isdigit():

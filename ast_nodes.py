@@ -60,4 +60,16 @@ class AssignStatement:
 class Block:
     def __init__(self, statements):
         self.statements = statements
-        
+
+# function
+class FunExpression:
+    def __init__(self, params, body):
+        self.params = params
+        self.body = body
+
+# call function class
+class CallExpression:
+    def __init__(self, func, args):
+        self.func = func
+        self.args = args
+

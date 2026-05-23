@@ -1,4 +1,4 @@
-from ast_nodes import Number, BinOp, Variable, LetStatement, PrintStatement, Bool, UnaryOp, IfExpression, AssignStatement, Block
+from ast_nodes import Number, BinOp, Variable, LetStatement, PrintStatement, Bool, UnaryOp, IfExpression, AssignStatement, Block, FunExpression, CallExpression
 
 class Parser:
 
@@ -29,13 +29,13 @@ class Parser:
         return None
 
     def parse_term(self):
-        node = self.parse_factor()
+        node = self.parse_call()
 
         while self.current() and self.current().type in ("STAR", "SLASH"):
             op = self.current()
             self.eat(op.type)
 
-            right = self.parse_factor()
+            right = self.parse_call()
 
             node = BinOp(node, op.type, right)
 
@@ -102,6 +102,10 @@ class Parser:
         elif token.type == "IF":
             return self.parse_if()
         
+        # fun function call
+        elif token.type == "FUN":
+            return self.parse_fun()
+
         raise Exception(f"Unexpected tpken! -> {token}")
     
     def parse_let(self):
@@ -202,6 +206,71 @@ class Parser:
         statements = []
         # keep parsing statements until reaching else or end
         while self.current() is not None and self.current().type not in stop_tokens:
-            statements.append(self.parse_statement())
+
+            # assignment statement
+            if self.current().type == "IDENTIFIER" and self.peek() and self.peek().type == "EQUAL":
+                statements.append(self.parse_assignment())
+
+            # let statement
+            elif self.current().type == "LET":
+                statements.append(self.parse_let())
+
+            # print statement
+            elif self.current().type == "PRINT":
+                statements.append(self.parse_print())
+
+            # otherwise
+            else:
+                expr = self.parse_or()
+                statements.append(expr)
+
+                # when next token is semicolon consuming it and continue
+                if self.current() and self.current().type == "SEMICOLON":
+                    self.eat("SEMICOLON")
+                else:
+                    break
 
         return Block(statements)
+    
+    def parse_fun(self):
+        self.eat("FUN")
+        self.eat("LEFTPARENTHESIS")
+
+        params = []
+
+        if self.current().type != "RIGHTPARENTHESIS":
+            params.append(self.eat("IDENTIFIER").value)
+
+            while self.current() and self.current().type == "COMMA":
+                self.eat("COMMA")
+                params.append(self.eat("IDENTIFIER").value)
+
+        self.eat("RIGHTPARENTHESIS")
+        self.eat("ARROW")
+
+        body = self.parse_block({"END"})
+
+        self.eat("END")
+
+        return FunExpression(params, body)
+    
+    def parse_call(self):
+        node = self.parse_factor()
+
+        while self.current() and self.current().type == "LEFTPARENTHESIS":
+            self.eat("LEFTPARENTHESIS")
+
+            args = []
+
+            if self.current().type != "RIGHTPARENTHESIS":
+                args.append(self.parse_or())
+
+                while self.current() and self.current().type == "COMMA":
+                    self.eat("COMMA")
+                    args.append(self.parse_or())
+            
+            self.eat("RIGHTPARENTHESIS")
+
+            node = CallExpression(node, args)
+
+        return node
