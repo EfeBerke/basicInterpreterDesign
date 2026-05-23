@@ -1,4 +1,4 @@
-from ast_nodes import Number, BinOp, Variable, LetStatement, PrintStatement, Bool
+from ast_nodes import Number, BinOp, Variable, LetStatement, PrintStatement, Bool, UnaryOp
 
 class Parser:
 
@@ -52,7 +52,7 @@ class Parser:
         self.eat("PRINT")
         self.eat("LEFTPARENTHESIS")
 
-        expr = self.parse_comparison()
+        expr = self.parse_or()
 
         self.eat("RIGHTPARENTHESIS")
         self.eat("SEMICOLON")
@@ -80,9 +80,17 @@ class Parser:
         
         elif token.type == "LEFTPARENTHESIS":
             self.eat("LEFTPARENTHESIS")
-            node = self.parse_comparison()
+            node = self.parse_or()
             self.eat("RIGHTPARENTHESIS")
             return node
+        
+        # not gate
+        elif token.type == "NOT":
+            self.eat("NOT")
+
+            expr = self.parse_factor()
+
+            return UnaryOp("NOT", expr)
 
         raise Exception(f"Unexpected tpken! -> {token}")
     
@@ -92,7 +100,7 @@ class Parser:
         name_token = self.eat("IDENTIFIER")
         self.eat("EQUAL")
 
-        value = self.parse_comparison()
+        value = self.parse_or()
 
         self.eat("SEMICOLON")
 
@@ -107,7 +115,7 @@ class Parser:
         if token.type == "PRINT":
             return self.parse_print()
         
-        expr = self.parse_comparison()
+        expr = self.parse_or()
         self.eat("SEMICOLON")
         return expr
     
@@ -129,3 +137,29 @@ class Parser:
             node = BinOp(node, operation.type, right)
 
         return node
+
+    def parse_and(self):
+        node = self.parse_comparison()
+
+        while self.current() and self.current().type == "AND":
+            operation = self.current()
+            self.eat("AND")
+
+            right = self.parse_comparison()
+
+            node = BinOp(node, operation.type, right)
+        return node
+    
+    def parse_or(self):
+        node = self.parse_and()
+
+        while self.current() and self.current().type == "OR":
+            operation = self.current()
+            self.eat("OR")
+
+            right = self.parse_and()
+
+            node = BinOp(node, operation.type, right)
+        return node
+    
+    # for every high level addition expression - comparison - and - or we need to update the first call in other blocks

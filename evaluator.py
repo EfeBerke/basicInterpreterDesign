@@ -1,4 +1,4 @@
-from ast_nodes import Number, BinOp, Variable, LetStatement, PrintStatement, Bool
+from ast_nodes import Number, BinOp, Variable, LetStatement, PrintStatement, Bool, UnaryOp
 
 def evaluate(node, env):
 
@@ -40,6 +40,13 @@ def evaluate(node, env):
         elif node.operation == "GTE":
             return left >= right
         
+        elif node.operation == "AND":
+            return left and right 
+        
+        elif node.operation == "OR":
+            return left or right
+
+        
 
     # Variable + let + print parts
     if isinstance(node, Variable):
@@ -63,3 +70,9 @@ def evaluate(node, env):
     if isinstance(node, Bool):
         return node.value
     
+    # unary evaluation
+    if isinstance(node, UnaryOp):
+        value = evaluate(node.expression, env)
+
+        if node.operation == "NOT":
+            return not value

@@ -35,3 +35,11 @@ class PrintStatement:
 class Bool:
     def __init__(self, value):
         self.value = value
+
+# Unary operations for logical operations
+
+class UnaryOp:
+    def __init__(self, operation, expression):
+        self.operation = operation
+        self.expression = expression
+        

@@ -37,9 +37,18 @@ def tokenize(text):
                 tokens.append(Token("TRUE", True))
             elif word == "false":
                 tokens.append(Token("FALSE", False))
+
+            # handling logical operators
+            elif word == "and":
+                tokens.append(Token("AND"))
+            elif word == "or":
+                tokens.append(Token("OR"))
+            elif word == "not":
+                tokens.append(Token("NOT"))
+
             else:
                 tokens.append(Token("IDENTIFIER", word))
-                
+
         elif text[i:i+2] == "==":
             tokens.append(Token("EQUAL"))
             i += 2

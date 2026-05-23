@@ -4,11 +4,11 @@ from evaluator import evaluate
 from environment import Environment
 
 code = """
-print(3 < 5);
-print(10 == 10);
-print(7 != 2);
-print(5 >= 5);
-print(8 <= 3);
+print(true and false);
+print(true or false);
+print(not false);
+print(3 < 5 and 10 == 10);
+print(false or 2 < 3);
 """
 
 tokens = tokenize(code)
