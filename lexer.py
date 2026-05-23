@@ -20,6 +20,25 @@ def tokenize(text):
         if char.isspace():
             i += 1
 
+        # handling the alphabethic characters for let, print and variables      
+        elif char.isalpha():
+            word = ""
+
+            while i < len(text) and (text[i].isalnum() or text[i] == "_"):
+                word += text[i]
+                i += 1
+
+            if word == "let":
+                tokens.append(Token("LET"))
+            elif word == "print":
+                tokens.append(Token("PRINT"))
+            else:
+                tokens.append(Token("IDENTIFIER", word))
+
+        elif char == "=":
+            tokens.append(Token("EQUAL"))
+            i += 1
+
         elif char.isdigit():
             number = ""
 

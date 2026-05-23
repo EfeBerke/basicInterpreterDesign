@@ -1,15 +1,18 @@
 from lexer import tokenize
 from parser import Parser
 from evaluator import evaluate
+from environment import Environment
 
-code = "(3 + 4) * 2"
+code = """
+let x = 10;
+print(x+5);
+"""
 
 tokens = tokenize(code)
-
 parser = Parser(tokens)
+program = parser.parse_program()
 
-tree = parser.parse_expression()
+env = Environment()
 
-result = evaluate(tree)
-
-print(result)
+for statement in program:
+    evaluate(statement, env)

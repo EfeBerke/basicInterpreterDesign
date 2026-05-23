@@ -1,4 +1,4 @@
-from ast_nodes import Number, BinOp
+from ast_nodes import Number, BinOp, Variable, LetStatement, PrintStatement
 
 class Parser:
 
@@ -61,3 +61,68 @@ class Parser:
             node = BinOp(node, op.type, right)
 
         return node
+    
+    def parse_print(self):
+        self.eat("PRINT")
+        self.eat("LEFTPARENTHESIS")
+
+        expr = self.parse_expression()
+
+        self.eat("RIGHTPARENTHESIS")
+        self.eat("SEMICOLON")
+
+        return PrintStatement(expr)
+
+    def parse_factor(self):
+        token = self.current()
+
+        if token.type == "NUMBER":
+            self.eat("NUMBER")
+            return Number(token.value)
+        
+        elif token.type == "IDENTIFIER":
+            self.eat("IDENTIFIER")
+            return Variable(token.value)
+        
+        elif token.type == "LEFTPARENTHESIS":
+            self.eat("LEFTPARENTHESIS")
+            node = self.parse_expression()
+            self.eat("RIGHTPARENTHESIS")
+            return node
+
+        raise Exception(f"Unexpected tpken! -> {token}")
+    
+    def parse_let(self):
+        self.eat("LET")
+
+        name_token = self.eat("IDENTIFIER")
+        self.eat("EQUAL")
+
+        value = self.parse_expression()
+
+        self.eat("SEMICOLON")
+
+        return LetStatement(name_token.value, value)
+    
+    def parse_statement(self):
+        token = self.current()
+
+        if token.type == "LET":
+            return self.parse_let()
+        
+        if token.type == "PRINT":
+            return self.parse_print()
+        
+        expr = self.parse_expression()
+        self.eat("SEMICOLON")
+        return expr
+    
+    def parse_program(self):
+        statements = []
+
+        while self.current() is not None:
+            statements.append(self.parse_statement())
+        return statements
+
+
+        
