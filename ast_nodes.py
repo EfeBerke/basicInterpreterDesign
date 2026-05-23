@@ -18,7 +18,7 @@ class BinOp:
         self.operation = operation
         self.right = right
 
-
+# variables, let and print classes
 class Variable:
     def __init__(self, name):
         self.name = name
@@ -32,14 +32,20 @@ class PrintStatement:
     def __init__(self, expr):
         self.expr = expr
     
+# Boolean values
 class Bool:
     def __init__(self, value):
         self.value = value
 
 # Unary operations for logical operations
-
 class UnaryOp:
     def __init__(self, operation, expression):
         self.operation = operation
         self.expression = expression
-        
+
+# If expression class
+class IfExpression:
+    def __init__(self, condition, then_branch, else_branch):
+        self.condition = condition
+        self.then_branch = then_branch
+        self.else_branch = else_branch

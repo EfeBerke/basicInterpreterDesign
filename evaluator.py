@@ -1,4 +1,4 @@
-from ast_nodes import Number, BinOp, Variable, LetStatement, PrintStatement, Bool, UnaryOp
+from ast_nodes import Number, BinOp, Variable, LetStatement, PrintStatement, Bool, UnaryOp, IfExpression
 
 def evaluate(node, env):
 
@@ -76,3 +76,12 @@ def evaluate(node, env):
 
         if node.operation == "NOT":
             return not value
+        
+    # if block evaluation
+    if isinstance(node, IfExpression):
+        condition = evaluate(node.condition, env)
+
+        if condition:
+            return evaluate(node.then_branch, env)
+        else:
+            return evaluate(node.else_branch, env)

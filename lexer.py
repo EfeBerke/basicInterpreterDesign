@@ -46,6 +46,16 @@ def tokenize(text):
             elif word == "not":
                 tokens.append(Token("NOT"))
 
+            # handling if/then/else/end
+            elif word == "if":
+                tokens.append(Token("IF"))
+            elif word == "then":
+                tokens.append(Token("THEN"))
+            elif word == "else":
+                tokens.append(Token("ELSE"))
+            elif word == "end":
+                tokens.append(Token("END"))
+
             else:
                 tokens.append(Token("IDENTIFIER", word))
 

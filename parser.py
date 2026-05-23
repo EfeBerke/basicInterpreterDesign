@@ -1,4 +1,4 @@
-from ast_nodes import Number, BinOp, Variable, LetStatement, PrintStatement, Bool, UnaryOp
+from ast_nodes import Number, BinOp, Variable, LetStatement, PrintStatement, Bool, UnaryOp, IfExpression
 
 class Parser:
 
@@ -91,7 +91,11 @@ class Parser:
             expr = self.parse_factor()
 
             return UnaryOp("NOT", expr)
-
+        
+        # if block detection
+        elif token.type == "IF":
+            return self.parse_if()
+        
         raise Exception(f"Unexpected tpken! -> {token}")
     
     def parse_let(self):
@@ -163,3 +167,16 @@ class Parser:
         return node
     
     # for every high level addition expression - comparison - and - or we need to update the first call in other blocks
+
+    def parse_if(self):
+        self.eat("IF")
+        condition = self.parse_or()
+
+        self.eat("THEN")
+        then_branch = self.parse_or()
+
+        self.eat("ELSE")
+        else_branch = self.parse_or()
+
+        self.eat("END")
+        return IfExpression(condition, then_branch, else_branch)
