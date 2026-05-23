@@ -32,6 +32,11 @@ def tokenize(text):
                 tokens.append(Token("LET"))
             elif word == "print":
                 tokens.append(Token("PRINT"))
+            # handling boolean parts
+            elif word == "true":
+                tokens.append(Token("TRUE", True))
+            elif word == "false":
+                tokens.append(Token("FALSE", False))
             else:
                 tokens.append(Token("IDENTIFIER", word))
 

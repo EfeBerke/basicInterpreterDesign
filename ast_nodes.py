@@ -32,3 +32,6 @@ class PrintStatement:
     def __init__(self, expr):
         self.expr = expr
     
+class Bool:
+    def __init__(self, value):
+        self.value = value

@@ -4,8 +4,10 @@ from evaluator import evaluate
 from environment import Environment
 
 code = """
-let x = 10;
-print(x+5);
+let a = true;
+let b = false;
+print(a);
+print(b);
 """
 
 tokens = tokenize(code)

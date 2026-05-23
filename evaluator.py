@@ -1,4 +1,4 @@
-from ast_nodes import Number, BinOp, Variable, LetStatement, PrintStatement
+from ast_nodes import Number, BinOp, Variable, LetStatement, PrintStatement, Bool
 
 def evaluate(node, env):
 
@@ -31,7 +31,17 @@ def evaluate(node, env):
         value = evaluate(node.value, env)
         env.define(node.name, value)
         return None
+    
     if isinstance(node, PrintStatement):
         value = evaluate(node.expr, env)
-        print(value)
+        # lowering the first characters of "T"rue and "F"alse
+        if isinstance(value, bool):
+            print(str(value).lower())
+        else:
+            print(value)
         return None
+    
+    # bool part
+    if isinstance(node, Bool):
+        return node.value
+    

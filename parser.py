@@ -1,4 +1,4 @@
-from ast_nodes import Number, BinOp, Variable, LetStatement, PrintStatement
+from ast_nodes import Number, BinOp, Variable, LetStatement, PrintStatement, Bool
 
 class Parser:
 
@@ -21,20 +21,6 @@ class Parser:
             return token
 
         raise Exception(f"Expected {token_type}")
-    
-    def parse_factor(self):
-        token = self.current()
-
-        if token.type == "NUMBER":
-            self.eat("NUMBER")
-            return Number(token.value)
-    
-        elif token.type == "LEFTPARENTHESIS":
-
-            self.eat("LEFTPARENTHESIS")
-            node = self.parse_expression()
-            self.eat("RIGHTPARENTHESIS")
-            return node
         
     def parse_term(self):
         node = self.parse_factor()
@@ -79,6 +65,14 @@ class Parser:
         if token.type == "NUMBER":
             self.eat("NUMBER")
             return Number(token.value)
+        
+        elif token.type == "TRUE":
+            self.eat("TRUE")
+            return Bool(True)
+        
+        elif token.type == "FALSE":
+            self.eat("FALSE")
+            return Bool(False)
         
         elif token.type == "IDENTIFIER":
             self.eat("IDENTIFIER")
