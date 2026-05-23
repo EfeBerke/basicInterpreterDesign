@@ -39,6 +39,22 @@ def tokenize(text):
                 tokens.append(Token("FALSE", False))
             else:
                 tokens.append(Token("IDENTIFIER", word))
+                
+        elif text[i:i+2] == "==":
+            tokens.append(Token("EQUAL"))
+            i += 2
+
+        elif text[i:i+2] == "!=":
+            tokens.append(Token("NOTEQUAL"))
+            i += 2
+
+        elif text[i:i+2] == "<=":
+            tokens.append(Token("LTE"))
+            i += 2
+
+        elif text[i:i+2] == ">=":
+            tokens.append(Token("GTE"))
+            i += 2 
 
         elif char == "=":
             tokens.append(Token("EQUAL"))
@@ -79,6 +95,14 @@ def tokenize(text):
 
         elif char == ";":
             tokens.append(Token("SEMICOLON"))
+            i += 1
+
+        elif char == "<":
+            tokens.append(Token("LT"))
+            i += 1
+
+        elif char == ">":
+            tokens.append(Token("GT"))
             i += 1
 
         else:

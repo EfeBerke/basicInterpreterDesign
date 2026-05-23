@@ -52,7 +52,7 @@ class Parser:
         self.eat("PRINT")
         self.eat("LEFTPARENTHESIS")
 
-        expr = self.parse_expression()
+        expr = self.parse_comparison()
 
         self.eat("RIGHTPARENTHESIS")
         self.eat("SEMICOLON")
@@ -80,7 +80,7 @@ class Parser:
         
         elif token.type == "LEFTPARENTHESIS":
             self.eat("LEFTPARENTHESIS")
-            node = self.parse_expression()
+            node = self.parse_comparison()
             self.eat("RIGHTPARENTHESIS")
             return node
 
@@ -92,7 +92,7 @@ class Parser:
         name_token = self.eat("IDENTIFIER")
         self.eat("EQUAL")
 
-        value = self.parse_expression()
+        value = self.parse_comparison()
 
         self.eat("SEMICOLON")
 
@@ -107,7 +107,7 @@ class Parser:
         if token.type == "PRINT":
             return self.parse_print()
         
-        expr = self.parse_expression()
+        expr = self.parse_comparison()
         self.eat("SEMICOLON")
         return expr
     
@@ -118,5 +118,14 @@ class Parser:
             statements.append(self.parse_statement())
         return statements
 
+    def parse_comparison(self):
+        node = self.parse_expression()
 
-        
+        if self.current() and self.current().type in ("EQUAL", "NOTEQUAL", "LT", "GT", "LTE", "GTE"):
+            operation = self.current()
+            self.eat(operation.type)
+
+            right = self.parse_expression()
+            node = BinOp(node, operation.type, right)
+
+        return node

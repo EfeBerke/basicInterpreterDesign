@@ -22,6 +22,24 @@ def evaluate(node, env):
         elif node.operation == "SLASH":
             return int(left / right)
         
+        elif node.operation == "EQUAL":
+            return left == right 
+        
+        elif node.operation == "NOTEQUAL":
+            return left != right 
+        
+        elif node.operation == "LT":
+            return left < right
+        
+        elif node.operation == "GT":
+            return left > right
+        
+        elif node.operation == "LTE":
+            return left <= right
+        
+        elif node.operation == "GTE":
+            return left >= right
+        
 
     # Variable + let + print parts
     if isinstance(node, Variable):
