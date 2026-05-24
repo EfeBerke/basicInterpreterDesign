@@ -2,8 +2,10 @@
 
 let fibonacci = fun(n) ->
     if n <= 1 then
+    (* edge case for fibonacci capturing 0 and 1 *)
         n
     else
+    (* classic recursion case *)
         fibonacci(n - 1) + fibonacci(n - 2)
     end
 end;

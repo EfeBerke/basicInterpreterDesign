@@ -1,9 +1,11 @@
 (* higher_order.txt - nested function behaviour *)
 
 let apply_twice_nested = fun(f, x) ->
+    (* nested function *)
     f(f(x))
 end;
 
+(* two basic function implementation *)
 let incrementbyone = fun(n) ->
     n + 1
 end;
@@ -12,5 +14,6 @@ let double = fun(n) ->
     n * 2
 end;
 
+(* nested function = applying method twice *)
 print(apply_twice_nested(incrementbyone, 5));
 print(apply_twice_nested(double, 3));

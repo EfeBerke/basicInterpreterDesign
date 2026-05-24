@@ -4,6 +4,7 @@ let a = 10;
 let b = 4;
 let c = 2;
 
+(* Basic operations and comparisons *)
 print(a);
 print(b);
 
@@ -26,10 +27,12 @@ let comparison = result >= 20;
 
 print(comparison);
 
+(* A demonstrative basic logic test *)
 let logic_test = true and not false;
 
 print(logic_test);
 
+(* Basic if-else-then behaviour *)
 let final_value =
     if result > 25 then
         result + 100

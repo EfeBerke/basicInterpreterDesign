@@ -11,5 +11,5 @@ let make_function = fun() ->
 end;
 
 let f = make_function();
-
+(* calling from global but x stays 20 because of the static scoping behaviour *)
 print(f(5));
