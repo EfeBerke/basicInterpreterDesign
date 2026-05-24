@@ -4,7 +4,8 @@ from parser import Parser
 from evaluator import evaluate
 from environment import Environment
 
-import sys # for file inputs
+# for file inputs
+import sys 
 
 test_file = sys.argv[1]
 

@@ -61,7 +61,7 @@ class Block:
     def __init__(self, statements):
         self.statements = statements
 
-# function
+# fun function
 class FunExpression:
     def __init__(self, params, body):
         self.params = params
