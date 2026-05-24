@@ -5,6 +5,7 @@ class Environment:
         self.values = {}
         self.parent = parent
 
+    # defining new variable
     def define(self, name, value):
         self.values[name] = value
 
