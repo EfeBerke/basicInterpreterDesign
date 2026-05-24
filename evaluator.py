@@ -27,6 +27,9 @@ def evaluate(node, env):
             return left * right
 
         elif node.operation == "SLASH":
+            # 0 division error handling
+            if right == 0:
+                raise Exception("Runtime error: division by 0!")
             return int(left / right)
         
         elif node.operation == "EQUAL":
@@ -119,9 +122,16 @@ def evaluate(node, env):
     if isinstance(node, CallExpression):
         func = evaluate(node.func, env)
 
+        # handling x(number) errors
+        if not isinstance(func, FunctionValue):
+            raise Exception("Runtime error: trying to call a non-function")
+
         arg_values = []
         for arg in node.args:
             arg_values.append(evaluate(arg, env))
+
+        if len(arg_values) != len(func.params):
+            raise Exception("Runtime error: wrong number of arguments!")
 
         call_env = Environment(parent=func.env)
 
