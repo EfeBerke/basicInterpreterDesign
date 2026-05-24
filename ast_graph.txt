@@ -1,0 +1,16 @@
+AST Design based on ast_nodes.py
+
+| Node Type        | Fields                          | Description                           |
+|------------------|---------------------------------|---------------------------------------|
+| Number           | value: int                      | Integer literal                       |
+| Bool             | value: bool                     | Boolean literal                       |
+| Variable         | name: string                    | Variable access                       |
+| BinOp            | operation, left, right          | Binary operation                      |
+| UnaryOp          | operation, expression           | Unary operation                       |
+| LetStatement     | name, value                     | Variable declaration                  |
+| AssignStatement  | name, value                     | Variable reassignment                 |
+| PrintStatement   | expr                            | Print operation                       |
+| IfExpression     | condition, then_branch, else_branch | Conditional expression            |
+| Block            | statements                      | Sequence of statements/expressions    |
+| FunExpression    | params, body                    | Function definition                   |
+| CallExpression   | func, args                      | Function call                         |
