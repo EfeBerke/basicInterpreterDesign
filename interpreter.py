@@ -3,30 +3,12 @@ from parser import Parser
 from evaluator import evaluate
 from environment import Environment
 
-code = """
-(* Test 10: Combined features -- scope, mutation through closures *)
-let make_counter = fun(start) ->
-    let count = start;
-    fun() ->
-        count = count + 1;
-        count
-    end
-end;
+import sys # for file inputs
 
-let c1 = make_counter(0);
-let c2 = make_counter(10);
-print(c1());
-print(c1());
-print(c2());
-print(c1());
-print(c2());
+test_file = sys.argv[1]
 
-(* Closure captures defining environment *)
-let x = 100;
-let get_x = fun() -> x end;
-x = 200;
-print(get_x());
-"""
+with open(test_file, "r") as test:
+    code = test.read()
 
 tokens = tokenize(code)
 parser = Parser(tokens)
