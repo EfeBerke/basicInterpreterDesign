@@ -1,0 +1,12 @@
+(* closures.txt - 3 multiplier func inside func *)
+
+let make_multiplier = fun(x) ->
+    fun(y) ->
+        x * y
+    end
+end;
+
+let times3 = make_multiplier(3);
+
+print(times3(4));
+print(times3(10));

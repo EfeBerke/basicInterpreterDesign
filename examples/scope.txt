@@ -1,0 +1,15 @@
+(* scope.txt - static scoping using defining environment rather than calling *)
+
+let x = 10;
+
+let make_function = fun() ->
+    let x = 20;
+
+    fun(y) ->
+        x + y
+    end
+end;
+
+let f = make_function();
+
+print(f(5));

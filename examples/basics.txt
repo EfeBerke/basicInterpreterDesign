@@ -1,0 +1,40 @@
+(* basics.txt *)
+
+let a = 10;
+let b = 4;
+let c = 2;
+
+print(a);
+print(b);
+
+print(a + b * c);
+print((a + b) * c);
+
+print(a - b);
+print(a / c);
+
+print(a > b);
+print(a < b);
+print(a == 10);
+print(b != c);
+
+let result = (a + b) * c;
+
+print(result);
+
+let comparison = result >= 20;
+
+print(comparison);
+
+let logic_test = true and not false;
+
+print(logic_test);
+
+let final_value =
+    if result > 25 then
+        result + 100
+    else
+        result - 100
+    end;
+
+print(final_value);
