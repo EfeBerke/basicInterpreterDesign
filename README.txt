@@ -1,5 +1,7 @@
 # Efe Berke Vatansever, 2025402006
 
+Basic Interpreter Project designed for CMPE260 Final Project
+
 How to Run the Interpreter
 
 Run a program file using:

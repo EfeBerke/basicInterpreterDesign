@@ -1,3 +1,5 @@
+# Efe Berke Vatansever, 2025402006
+
 # converter from characters to tokens
 class Token:
     def __init__(self, type_, value = None):
