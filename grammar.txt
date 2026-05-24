@@ -1,0 +1,74 @@
+EBNF Grammar
+(I use some EBNF shorthand operators such as *, ?, 
+and grouping parentheses to make the grammar more concise and readable.)
+
+<program> ::= <block>
+
+<block> ::= (<statement>)*
+
+<statement> ::= <letstatement>
+              | <assignstatement>
+              | <printstatement>
+              | <expr> ";"
+
+<letstatement> ::= "let" <identifier> "=" <expr> ";"
+
+<assignstatement> ::= <identifier> "=" <expr> ";"
+
+<printstatement> ::= "print" "(" <expr> ")" ";"
+
+<expr> ::= <or-expr>
+
+<or-expr> ::= <and-expr> ("or" <and-expr>)*
+
+<and-expr> ::= <comparison-expr> ("and" <comparison-expr>)*
+
+<comparison-expr> ::= <additive-expr>
+                    | <additive-expr> <comparison-op> <additive-expr>
+
+<comparison-op> ::= "==" | "!=" | "<" | ">" | "<=" | ">="
+
+<additive-expr> ::= <multiplicative-expr> (("+" | "-") <multiplicative-expr>)*
+
+<multiplicative-expr> ::= <call-expr> (("*" | "/") <call-expr>)*
+
+<call-expr> ::= <primary-expr> ("(" <arguments> ")")*
+
+<arguments> ::= <expr> ("," <expr>)*
+              | ε
+
+<primary-expr> ::= <integer>
+                 | <boolean>
+                 | <identifier>
+                 | <unary-expr>
+                 | <if-expr>
+                 | <fun-expr>
+                 | "(" <expr> ")"
+
+<unary-expr> ::= "not" <primary-expr>
+               | "-" <primary-expr>
+
+<if-expr> ::= "if" <expr> "then" <block-until-else> "else" <block-until-end> "end"
+
+<block-until-else> ::= (<statement>)* <expr>?
+                     | (<statement>)*
+
+<block-until-end> ::= (<statement>)* <expr>?
+                    | (<statement>)*
+
+<fun-expr> ::= "fun" "(" <parameters> ")" "->" <block-until-end> "end"
+
+<parameters> ::= <identifier> ("," <identifier>)*
+               | ε
+
+<boolean> ::= "true" | "false"
+
+<integer> ::= <digit>+
+
+<identifier> ::= <letter> (<letter> | <digit> | "_")*
+
+<digit> ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+
+<letter> ::= "A" | ... | "Z" | "a" | ... | "z"
+
+<comment> ::= "(*" <comment-content> "*)"
